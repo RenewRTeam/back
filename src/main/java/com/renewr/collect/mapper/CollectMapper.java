@@ -9,4 +9,5 @@ public interface CollectMapper {
     Collect collectPostDtoToCollect(CollectDto.Post post);
     Collect collectPatchDtoToCollect(CollectDto.Patch patch);
     CollectDto.Response collectToCollectResponseDto(Collect collect);
+    CollectDto.listResponse collectToCollectListResponseDto(Collect collect);
 }

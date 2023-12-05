@@ -24,7 +24,7 @@ public class CollectDto {
 
         private String imageUrl;
 
-        @NotNull(message = "마감 인원을 설정해 주세요.")
+        @NotNull(message = "리워드를 설정해 주세요.")
         private int point;
 
         @NotNull(message = "마감일을 입력해 주세요.")
@@ -66,5 +66,18 @@ public class CollectDto {
         private int capacity;
 
         private Collect.CollectStatus status;
+    }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class listResponse{
+        private long collectId;
+
+        private String title;
+
+        private String capacity;
+
+        private String imageUrl;
     }
 }

@@ -60,4 +60,12 @@ public class Collect extends BaseTimeEntity {
         }
     }
 
+    public Collect(String title, String content, String imageUrl , int point, int capacity){
+        this.title = title;
+        this.content = content;
+        this.imageUrl = imageUrl;
+        this.point = point;
+        this.capacity = capacity;
+    }
+
 }
