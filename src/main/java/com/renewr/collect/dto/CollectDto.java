@@ -1,15 +1,16 @@
 package com.renewr.collect.dto;
 
 import com.renewr.collect.entity.Collect;
+import com.renewr.requirements.dto.RequirementDto;
+import com.renewr.requirements.entity.Requirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.List;
 
 public class CollectDto {
     @Getter
@@ -32,6 +33,8 @@ public class CollectDto {
 
         @NotNull(message = "마감 인원을 설정해 주세요.")
         private int capacity;
+
+        private List<RequirementDto.Post> requirements;
     }
 
     @Getter
@@ -64,6 +67,8 @@ public class CollectDto {
         private int capacity;
 
         private Collect.CollectStatus status;
+
+        private List<Requirement> requirements;
     }
 
     @Getter @Setter

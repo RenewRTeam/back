@@ -1,6 +1,8 @@
 package com.renewr.collect.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.global.common.BaseTimeEntity;
+import com.renewr.requirements.entity.Requirement;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -8,8 +10,7 @@ import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,6 +56,10 @@ public class Collect extends BaseTimeEntity {
             this.value = value;
         }
     }
+
+    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Requirement> requirements = new ArrayList<>();
 
     public Collect(String title, String content, String imageUrl , int point, int capacity){
         this.title = title;

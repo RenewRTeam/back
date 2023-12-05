@@ -2,6 +2,7 @@ package com.renewr.collect.service;
 
 
 import com.renewr.collect.entity.Collect;
+import com.renewr.requirements.entity.Requirement;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,18 @@ public class CollectService {
     public Collect saveCollect(Collect collect) {
         Collect newCollect = new Collect(collect.getTitle(),collect.getContent(),
                 collect.getImageUrl(),collect.getPoint(),collect.getCapacity());
+
+        //requirement 추가 하는 로직
+        List<Requirement> requirements = new ArrayList<>();
+
+        for (Requirement requires : collect.getRequirements()) {
+            Requirement newRequirement = new Requirement(requires.getValue());
+            newRequirement.setCollect(newCollect);
+            requirements.add(newRequirement);
+        }
+
+        newCollect.setRequirements(requirements);
+
         return collectRepository.save(newCollect);
     }
 
