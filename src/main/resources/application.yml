@@ -29,9 +29,10 @@ spring:
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
 
+#create-drop을 활용하여 프로그램 종료 시 테이블 삭제
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true

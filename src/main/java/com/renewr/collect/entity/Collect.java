@@ -37,10 +37,6 @@ public class Collect extends BaseTimeEntity {
     private int point;
 
     @Column
-    @NotNull(message = "마감일을 입력해 주세요.")
-    private Date deadLine;
-
-    @Column
     @NotNull(message = "마감 인원을 설정해 주세요.")
     private int capacity;
 

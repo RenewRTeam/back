@@ -27,8 +27,8 @@ public class CollectDto {
         @NotNull(message = "리워드를 설정해 주세요.")
         private int point;
 
-        @NotNull(message = "마감일을 입력해 주세요.")
-        private Date deadLine;
+//        @NotNull(message = "마감일을 입력해 주세요.")
+//        private Date deadLine;
 
         @NotNull(message = "마감 인원을 설정해 주세요.")
         private int capacity;
@@ -61,8 +61,6 @@ public class CollectDto {
 
         private int point;
 
-        private Date deadLine;
-
         private int capacity;
 
         private Collect.CollectStatus status;
@@ -76,7 +74,7 @@ public class CollectDto {
 
         private String title;
 
-        private String capacity;
+        private int capacity;
 
         private String imageUrl;
     }

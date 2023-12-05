@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class CollectService {
-    private static CollectRepository collectRepository;
+    private final CollectRepository collectRepository;
 
     public Collect saveCollect(Collect collect) {
         Collect newCollect = new Collect(collect.getTitle(),collect.getContent(),
@@ -24,8 +24,9 @@ public class CollectService {
         return collectRepository.save(newCollect);
     }
 
-    public Collect patchCollect(Collect collect) {
-        Collect findCollect = findVerifiedCollect(collect.getCollectId());
+    public Collect patchCollect(Long collectId, Collect collect) {
+        //member 패키지 제작 이후, memberId 검증 필요 (본인만 수정 가능 기능 등)
+        Collect findCollect = findVerifiedCollect(collectId);
 
         Optional.ofNullable(collect.getTitle())
                 .ifPresent(findCollect::setTitle);
@@ -45,8 +46,13 @@ public class CollectService {
     }
 
     public void deleteCollect(Long collectId){
+        //member 패키지 제작 이후, memberId 검증 필요 (본인만 삭제 가능 기능 등)
         collectRepository.deleteById(collectId);
     }
+
+//    public List<Collect> findMyCollects(long memberId){
+//        return collectRepository.findByMemberId(memberId);
+//    }
 
     @Transactional(readOnly = true)
     public Collect findVerifiedCollect(long boastId){
