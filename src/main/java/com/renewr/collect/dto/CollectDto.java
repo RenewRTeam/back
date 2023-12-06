@@ -67,7 +67,7 @@ public class CollectDto {
 
         private Collect.CollectStatus status;
 
-        private List<Requirement> requirements;
+        private List<RequirementDto.Response> requirements;
     }
 
     @Getter @Setter
@@ -81,5 +81,13 @@ public class CollectDto {
         private int capacity;
 
         private String imageUrl;
+    }
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResponseId{
+        private long collectId;
+
+        private String title;
     }
 }

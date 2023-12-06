@@ -35,4 +35,8 @@ public class Requirement extends BaseTimeEntity {
     public void setCollect(Collect collect){
         this.collect = collect;
     }
+
+    public void setValue(String value){
+        this.value = value;
+    }
 }

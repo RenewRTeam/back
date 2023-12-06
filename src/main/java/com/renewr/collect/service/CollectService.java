@@ -4,6 +4,7 @@ package com.renewr.collect.service;
 import com.renewr.collect.entity.Collect;
 import com.renewr.collect.entity.Requirement;
 import com.renewr.collect.repository.CollectRepository;
+import com.renewr.collect.repository.RequirementRepository;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Transactional
 public class CollectService {
     private final CollectRepository collectRepository;
+    private final RequirementRepository requirementRepository;
 
     public Collect saveCollect(Collect collect) {
         Collect newCollect = new Collect(collect.getTitle(),collect.getContent(),

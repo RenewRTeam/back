@@ -2,6 +2,7 @@ package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.global.common.BaseTimeEntity;
+import com.renewr.offer.entity.Offer;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @DynamicUpdate
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Collect extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,9 +57,24 @@ public class Collect extends BaseTimeEntity {
         }
     }
 
+    @Getter
     @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Requirement> requirements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Offer> offers = new ArrayList<>();
+
+    public void setRequirements(List<Requirement> requirement) {
+        this.requirements = requirement;
+    }
+    public void addOffers(Offer offer){
+        this.offers.add(offer);
+        if(offer.getCollect() != this){
+            offer.setCollect(this);
+        }
+    }
 
     public Collect(String title, String content, String imageUrl , int point, int capacity){
         this.title = title;
@@ -66,6 +82,14 @@ public class Collect extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.point = point;
         this.capacity = capacity;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }
