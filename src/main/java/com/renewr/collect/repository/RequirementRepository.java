@@ -1,6 +1,6 @@
-package com.renewr.requirements.repository;
+package com.renewr.collect.repository;
 
-import com.renewr.requirements.entity.Requirement;
+import com.renewr.collect.entity.Requirement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

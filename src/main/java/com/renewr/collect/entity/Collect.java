@@ -2,7 +2,6 @@ package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.global.common.BaseTimeEntity;
-import com.renewr.requirements.entity.Requirement;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 

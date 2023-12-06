@@ -2,7 +2,7 @@ package com.renewr.collect.service;
 
 
 import com.renewr.collect.entity.Collect;
-import com.renewr.requirements.entity.Requirement;
+import com.renewr.collect.entity.Requirement;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
@@ -69,10 +69,9 @@ public class CollectService {
 //    }
 
     @Transactional(readOnly = true)
-    public Collect findVerifiedCollect(long boastId){
-        Optional<Collect> optionalCollect =
-                collectRepository.findById(boastId);
-        return optionalCollect.orElseThrow(() ->
-                new BaseException(GlobalErrorCode.NOT_FOUND));
+    public Collect findVerifiedCollect(long collectId) {
+        return collectRepository.findById(collectId)
+                .orElseThrow(() -> new BaseException(GlobalErrorCode.NOT_FOUND));
     }
+
 }

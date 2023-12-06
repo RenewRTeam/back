@@ -1,4 +1,4 @@
-package com.renewr.requirements.dto;
+package com.renewr.collect.dto;
 
 import com.renewr.collect.entity.Collect;
 import lombok.AllArgsConstructor;

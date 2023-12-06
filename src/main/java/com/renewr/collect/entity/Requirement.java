@@ -1,7 +1,9 @@
-package com.renewr.requirements.entity;
+package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.renewr.collect.entity.Collect;
+import com.renewr.global.common.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,10 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @DynamicUpdate
-@NoArgsConstructor
-public class Requirement {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Requirement extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requireId;
@@ -29,5 +30,9 @@ public class Requirement {
 
     public Requirement(String value) {
         this.value = value;
+    }
+
+    public void setCollect(Collect collect){
+        this.collect = collect;
     }
 }
