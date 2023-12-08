@@ -27,20 +27,17 @@ public class CollectDto {
         @NotNull(message = "리워드를 설정해 주세요.")
         private int point;
 
-//        @NotNull(message = "마감일을 입력해 주세요.")
-//        private Date deadLine;
-
         @NotNull(message = "마감 인원을 설정해 주세요.")
         private int capacity;
 
-        private List<RequirementDto.Post> requirements;
+        private List<RequirementDto.Response> requirements;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Patch{
-        private Long collectId;
+        private Long id;
 
         private String title;
 
@@ -53,7 +50,7 @@ public class CollectDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response{
-        private long collectId;
+        private long id;
 
         private String title;
 
@@ -74,7 +71,7 @@ public class CollectDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class listResponse{
-        private long collectId;
+        private long id;
 
         private String title;
 
@@ -86,7 +83,7 @@ public class CollectDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseId{
-        private long collectId;
+        private long id;
 
         private String title;
     }

@@ -12,4 +12,6 @@ public interface OfferMapper {
     Offer offerPostDtoToOffer(OfferDto.post post);
     OfferDto.response offerToOfferResponseDto(Offer offer);
     List<ListResponse> offerToOfferListResponseDto(List<Offer> offer);
+
+    List<OfferDto.OfferImageResponse> offerToOfferImageResponseDto(List<Offer> offer);
 }

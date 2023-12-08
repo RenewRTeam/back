@@ -13,7 +13,7 @@ public class OfferDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class post{
-        private Long collectId;
+        private Long id;
 
         private String content;
 
@@ -27,11 +27,13 @@ public class OfferDto {
     @AllArgsConstructor
     public static class response{
 
-        private Long offerId;
+        private Long id;
 
         private String content;
 
         private String imageUrl;
+
+        private Offer.OfferStatus offerStatus;
 
         private CollectDto.ResponseId collect;
     }
@@ -42,5 +44,16 @@ public class OfferDto {
     public static class ListResponse{
         private CollectDto.listResponse listCollect;
         private Offer.OfferStatus status;
+    }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OfferImageResponse{
+
+        private Long id;
+
+        private String imageUrl;
+
     }
 }

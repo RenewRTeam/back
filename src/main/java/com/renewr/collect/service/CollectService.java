@@ -7,7 +7,11 @@ import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collect.repository.RequirementRepository;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
+import com.renewr.offer.entity.Offer;
+import com.renewr.offer.repository.OfferRepository;
+import com.renewr.offer.service.OfferService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,23 +24,27 @@ import java.util.Optional;
 @Transactional
 public class CollectService {
     private final CollectRepository collectRepository;
-    private final RequirementRepository requirementRepository;
-
+    private final OfferRepository offerRepository;
     public Collect saveCollect(Collect collect) {
-        Collect newCollect = new Collect(collect.getTitle(),collect.getContent(),
-                collect.getImageUrl(),collect.getPoint(),collect.getCapacity());
+
+        Collect newCollect = Collect.builder()
+                .title(collect.getTitle())
+                .content(collect.getContent())
+                .imageUrl(collect.getImageUrl())
+                .point(collect.getPoint())
+                .capacity(collect.getCapacity())
+                .build();
 
         //requirement 추가 하는 로직
         List<Requirement> requirements = new ArrayList<>();
 
-        for (Requirement requires : collect.getRequirements()) {
-            Requirement newRequirement = new Requirement(requires.getValue());
+        for (Requirement requirement : collect.getRequirements()) {
+            Requirement newRequirement = new Requirement(requirement.getValue());
             newRequirement.setCollect(newCollect);
             requirements.add(newRequirement);
         }
 
         newCollect.setRequirements(requirements);
-
         return collectRepository.save(newCollect);
     }
 
@@ -74,6 +82,46 @@ public class CollectService {
     public Collect findVerifiedCollect(long collectId) {
         return collectRepository.findById(collectId)
                 .orElseThrow(() -> new BaseException(GlobalErrorCode.NOT_FOUND));
+    }
+
+    //수집 데이터 리워드 결정
+    public void allowReward(Long offerId){
+        Optional<Offer> findOffer = offerRepository.findById(offerId);
+        Collect findCollect = findOffer.get().getCollect();
+        findOffer.get().setOfferStatus(Offer.OfferStatus.APPROVED);
+        findCollect.setHeadCount(findCollect.getHeadCount()+1);
+        collectRepository.save(findCollect);
+        offerRepository.save(findOffer.get());
+        isMaxCapacity(findCollect.getId());
+    }
+    public void rejectReward(Long offerId){
+        Optional<Offer> findOffer = offerRepository.findById(offerId);
+        findOffer.get().setOfferStatus(Offer.OfferStatus.REJECTED);
+        offerRepository.save(findOffer.get());
+    }
+
+    //인원수 마감 기능
+    public void isMaxCapacity(Long collectId){
+        Collect findCollect = findVerifiedCollect(collectId);
+        int maxCapacity = findCollect.getCapacity();
+        int currentCapacity = findCollect.getHeadCount();
+        if(maxCapacity == currentCapacity){
+            findCollect.setStatus(Collect.CollectStatus.CLOSED);
+            changeAttendToRejected(collectId);
+            collectRepository.save(findCollect);
+        }
+    }
+
+    //마감했을 때, 대기중인 이미지들 모두 자동 마감처리
+    public void changeAttendToRejected(Long collectId) {
+        List<Offer> listOffer = offerRepository.findByCollectId(collectId);
+
+        for (Offer offer : listOffer) {
+            if (offer.getOfferStatus() == Offer.OfferStatus.ATTEND) {
+                offer.setOfferStatus(Offer.OfferStatus.REJECTED);
+                offerRepository.save(offer);
+            }
+        }
     }
 
 }

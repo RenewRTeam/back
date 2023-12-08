@@ -17,14 +17,15 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Requirement extends BaseTimeEntity {
     @Id
+    @Column(name = "REQUIREMENT_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requireId;
+    private Long id;
 
     @Column
     private String value;
 
     @ManyToOne
-    @JoinColumn(name = "collectId")
+    @JoinColumn(name = "id")
     @JsonBackReference
     private Collect collect;
 

@@ -19,7 +19,7 @@ public class RequirementDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Patch{
-        private Long requireId;
+        private Long id;
         private String value;
     }
 
@@ -27,7 +27,7 @@ public class RequirementDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response{
-        private Long requireId;
+        private Long id;
         private String value;
     }
 }

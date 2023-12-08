@@ -1,7 +1,9 @@
 package com.renewr.collect.mapper;
 
 import com.renewr.collect.dto.CollectDto;
+import com.renewr.collect.dto.RequirementDto;
 import com.renewr.collect.entity.Collect;
+import com.renewr.collect.entity.Requirement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,4 +16,5 @@ public interface CollectMapper {
     Collect collectPatchDtoToCollect(CollectDto.Patch patch);
     CollectDto.Response collectToCollectResponseDto(Collect collect);
     List<CollectDto.listResponse> collectToCollectListResponseDto(List<Collect> collect);
+
 }

@@ -1,11 +1,15 @@
 package com.renewr.offer.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.renewr.Collection.Entity.DataCollection;
 import com.renewr.collect.entity.Collect;
 import com.renewr.global.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,7 +17,8 @@ import javax.persistence.*;
 public class Offer extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long offerId;
+    @Column(name = "OFFER_ID")
+    private Long id;
 
     @Column
     private String content;
@@ -26,7 +31,9 @@ public class Offer extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column
+    @Setter
     private Offer.OfferStatus offerStatus = OfferStatus.ATTEND;
+
 
     @Getter
     public enum OfferStatus {
@@ -43,12 +50,20 @@ public class Offer extends BaseTimeEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "collectId")
+    @JoinColumn(name = "id")
     @JsonBackReference
     private Collect collect;
 
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<DataCollection> dataCollections = new ArrayList<>();
+
     public void setCollect(Collect collect){
         this.collect = collect;
+    }
+
+    public void setOfferStatus(){
+
     }
     @Builder
     public Offer(String content, String imageUrl, String location){
@@ -56,4 +71,6 @@ public class Offer extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.location = location;
     }
+
+
 }

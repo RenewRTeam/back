@@ -1,11 +1,16 @@
 package com.renewr.collect.controller;
 
 import com.renewr.collect.dto.CollectDto;
+import com.renewr.collect.dto.RequirementDto;
 import com.renewr.collect.entity.Collect;
 import com.renewr.collect.mapper.CollectMapper;
 import com.renewr.collect.service.CollectService;
 import com.renewr.global.common.BaseResponse;
 import com.renewr.global.exception.GlobalErrorCode;
+import com.renewr.offer.dto.OfferDto;
+import com.renewr.offer.entity.Offer;
+import com.renewr.offer.mapper.OfferMapper;
+import com.renewr.offer.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +60,17 @@ public class CollectController {
     public BaseResponse<GlobalErrorCode> deleteCollect(@PathVariable("collect-id") Long collectId){
         collectService.deleteCollect(collectId);
         return new BaseResponse<>(GlobalErrorCode.SUCCESS);
+    }
+
+    //데이터 리워드 결정
+    @PostMapping("/allow/{offer-id}")
+    public String allowOffer(@PathVariable("offer-id")Long offerId){
+        collectService.allowReward(offerId);
+        return "OK";
+    }
+    @PostMapping("/reject/{offer-id}")
+    public String rejectOffer(@PathVariable("offer-id")Long offerId){
+        collectService.rejectReward(offerId);
+        return "OK";
     }
 }

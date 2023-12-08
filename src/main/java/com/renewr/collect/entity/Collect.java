@@ -1,6 +1,7 @@
 package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.renewr.Collection.Entity.DataCollection;
 import com.renewr.global.common.BaseTimeEntity;
 import com.renewr.offer.entity.Offer;
 import lombok.*;
@@ -14,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Collect extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long collectId;
+    private long id;
 
     @Column
     @NotBlank(message = "제목을 입력해 주세요")
@@ -41,8 +42,13 @@ public class Collect extends BaseTimeEntity {
     @NotNull(message = "마감 인원을 설정해 주세요.")
     private int capacity;
 
+    @Column
+    @Setter
+    private int headCount=0;
+
     @Enumerated(EnumType.STRING)
     @Column
+    @Setter
     private CollectStatus status = CollectStatus.IN_PROGRESS;
 
     @Getter
@@ -58,14 +64,30 @@ public class Collect extends BaseTimeEntity {
     }
 
     @Getter
-    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Requirement> requirements = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Offer> offers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<DataCollection> dataCollections = new ArrayList<>();
+
+    @Builder
+    public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements){
+        this.title = title;
+        this.content = content;
+        this.imageUrl = imageUrl;
+        this.point = point;
+        this.capacity = capacity;
+        this.requirements = requirements;
+    }
+
+
+    //set , add Method
     public void setRequirements(List<Requirement> requirement) {
         this.requirements = requirement;
     }
@@ -75,15 +97,6 @@ public class Collect extends BaseTimeEntity {
             offer.setCollect(this);
         }
     }
-
-    public Collect(String title, String content, String imageUrl , int point, int capacity){
-        this.title = title;
-        this.content = content;
-        this.imageUrl = imageUrl;
-        this.point = point;
-        this.capacity = capacity;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
