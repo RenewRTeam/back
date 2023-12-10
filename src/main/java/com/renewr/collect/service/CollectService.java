@@ -1,10 +1,13 @@
 package com.renewr.collect.service;
 
 
+import com.renewr.S3.S3Service;
 import com.renewr.collect.entity.Collect;
 import com.renewr.collect.entity.Requirement;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collect.repository.RequirementRepository;
+import com.renewr.file.entity.File;
+import com.renewr.file.service.FileService;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
 import com.renewr.offer.entity.Offer;
@@ -14,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +30,9 @@ import java.util.Optional;
 public class CollectService {
     private final CollectRepository collectRepository;
     private final OfferRepository offerRepository;
-    public Collect saveCollect(Collect collect) {
+    private final FileService fileService;
+    private final S3Service s3Service;
+    public Collect saveCollect(Collect collect,MultipartFile image) throws IOException {
 
         Collect newCollect = Collect.builder()
                 .title(collect.getTitle())
@@ -45,6 +52,8 @@ public class CollectService {
         }
 
         newCollect.setRequirements(requirements);
+        saveCollectFile(image,newCollect);
+
         return collectRepository.save(newCollect);
     }
 
@@ -122,6 +131,14 @@ public class CollectService {
                 offerRepository.save(offer);
             }
         }
+    }
+
+    public void saveCollectFile(MultipartFile image, Collect collect) throws IOException {
+        String url = s3Service.uploadFile(image); // 이미지 s3에 업로드
+        File file = new File(image.getOriginalFilename(), url);
+        fileService.save(file); // file repository 저장
+        collect.setImageUrl(url);
+        collect.setFile(file);
     }
 
 }

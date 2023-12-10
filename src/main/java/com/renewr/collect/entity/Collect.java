@@ -2,6 +2,7 @@ package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.Collection.Entity.DataCollection;
+import com.renewr.file.entity.File;
 import com.renewr.global.common.BaseTimeEntity;
 import com.renewr.offer.entity.Offer;
 import lombok.*;
@@ -43,12 +44,10 @@ public class Collect extends BaseTimeEntity {
     private int capacity;
 
     @Column
-    @Setter
     private int headCount=0;
 
     @Enumerated(EnumType.STRING)
     @Column
-    @Setter
     private CollectStatus status = CollectStatus.IN_PROGRESS;
 
     @Getter
@@ -75,6 +74,10 @@ public class Collect extends BaseTimeEntity {
     @OneToMany(mappedBy = "collect", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "FILE_ID")
+    private File file;
 
     @Builder
     public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements){
@@ -103,6 +106,22 @@ public class Collect extends BaseTimeEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setHeadCount(int headCount) {
+        this.headCount = headCount;
+    }
+
+    public void setStatus(CollectStatus status) {
+        this.status = status;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

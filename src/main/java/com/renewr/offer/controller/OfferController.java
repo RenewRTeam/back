@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,10 @@ public class OfferController {
 
     //데이터 제공 글 작성하기
     @PostMapping("/{collect-id}")
-    public ResponseEntity<OfferDto.response> postOffer(@PathVariable("collect-id")Long collectId, @RequestBody OfferDto.post post){
-        Offer offer = offerService.saveOffer(mapper.offerPostDtoToOffer(post),collectId);
+    public ResponseEntity<OfferDto.response> postOffer(@RequestPart("collect-id")Long collectId,
+                                                       @RequestPart OfferDto.post post,
+                                                       @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+        Offer offer = offerService.saveOffer(mapper.offerPostDtoToOffer(post),collectId,image);
         return new ResponseEntity<>(mapper.offerToOfferResponseDto(offer), HttpStatus.CREATED);
     }
 
@@ -50,9 +54,9 @@ public class OfferController {
     }
 
     //수집 데이터 관리 탭에 들어갈 때 사용
-    @GetMapping("/col/{collect-id}")
-    public ResponseEntity<List<OfferDto.OfferImageResponse>> getOfferByCollectId(@PathVariable("collect-id")Long collectId){
-        List<Offer> listOffer = offerService.findOfferByCollectId(collectId);
-        return new ResponseEntity<>(mapper.offerToOfferImageResponseDto(listOffer),HttpStatus.OK);
-    }
+//    @GetMapping("/col/{collect-id}")
+//    public ResponseEntity<List<OfferDto.OfferImageResponse>> getOfferByCollectId(@PathVariable("collect-id")Long collectId){
+//        List<Offer> listOffer = offerService.findOfferByCollectId(collectId);
+//        return new ResponseEntity<>(mapper.offerToOfferImageResponseDto(listOffer),HttpStatus.OK);
+//    }
 }

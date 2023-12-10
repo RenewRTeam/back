@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,10 @@ public class CollectController {
     private final CollectService collectService;
 
     @PostMapping()
-    public ResponseEntity<CollectDto.Response> postCollect(@RequestBody CollectDto.Post post){
-        Collect collect = collectService.saveCollect(mapper.collectPostDtoToCollect(post));
+    public ResponseEntity<CollectDto.Response> postCollect(@RequestPart CollectDto.Post post,
+                                                           @RequestPart (value = "image", required = false) MultipartFile image)
+    throws IOException {
+        Collect collect = collectService.saveCollect(mapper.collectPostDtoToCollect(post),image);
         return new ResponseEntity<>(mapper.collectToCollectResponseDto(collect), HttpStatus.CREATED);
     }
 

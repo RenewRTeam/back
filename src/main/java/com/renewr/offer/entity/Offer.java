@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.Collection.Entity.DataCollection;
 import com.renewr.collect.entity.Collect;
+import com.renewr.file.entity.File;
 import com.renewr.global.common.BaseTimeEntity;
 import lombok.*;
 
@@ -31,7 +32,6 @@ public class Offer extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column
-    @Setter
     private Offer.OfferStatus offerStatus = OfferStatus.ATTEND;
 
 
@@ -58,13 +58,26 @@ public class Offer extends BaseTimeEntity {
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "FILE_ID")
+    private File file;
+
     public void setCollect(Collect collect){
         this.collect = collect;
     }
 
-    public void setOfferStatus(){
-
+    public void setOfferStatus(Offer.OfferStatus offerStatus) {
+        this.offerStatus = offerStatus;
     }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     @Builder
     public Offer(String content, String imageUrl, String location){
         this.content = content;
