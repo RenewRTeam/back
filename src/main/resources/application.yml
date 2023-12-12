@@ -29,6 +29,17 @@ spring:
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
 
+cloud:
+  aws:
+    s3:
+      bucket: <버킷이름>
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: <발급받은 accessKey>
+      secretKey: <발급받은 secretKey>
+
+
 #create-drop을 활용하여 프로그램 종료 시 테이블 삭제
   jpa:
     hibernate:

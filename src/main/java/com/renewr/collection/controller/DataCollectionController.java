@@ -1,9 +1,9 @@
-package com.renewr.Collection.controller;
+package com.renewr.collection.controller;
 
-import com.renewr.Collection.Entity.DataCollection;
-import com.renewr.Collection.dto.DataCollectionDto;
-import com.renewr.Collection.mapper.DataCollectionMapper;
-import com.renewr.Collection.repository.DataCollectionRepository;
+import com.renewr.collection.Entity.DataCollection;
+import com.renewr.collection.dto.DataCollectionDto;
+import com.renewr.collection.mapper.DataCollectionMapper;
+import com.renewr.collection.repository.DataCollectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

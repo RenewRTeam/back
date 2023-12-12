@@ -1,4 +1,4 @@
-package com.renewr.Collection.Entity;
+package com.renewr.collection.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.renewr.collect.entity.Collect;

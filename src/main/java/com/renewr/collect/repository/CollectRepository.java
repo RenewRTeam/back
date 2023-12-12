@@ -4,9 +4,6 @@ import com.renewr.collect.entity.Collect;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
 public interface CollectRepository extends JpaRepository<Collect,Long>{
 //    member 패키지 제작 이후, memberId를 통한 글 목록 조회 메서드 필요 (본인이 작성한 글 확인)

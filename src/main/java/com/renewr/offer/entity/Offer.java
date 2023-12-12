@@ -2,7 +2,7 @@ package com.renewr.offer.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.renewr.Collection.Entity.DataCollection;
+import com.renewr.collection.Entity.DataCollection;
 import com.renewr.collect.entity.Collect;
 import com.renewr.file.entity.File;
 import com.renewr.global.common.BaseTimeEntity;

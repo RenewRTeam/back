@@ -1,7 +1,6 @@
 package com.renewr.collect.dto;
 
 import com.renewr.collect.entity.Collect;
-import com.renewr.collect.entity.Requirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

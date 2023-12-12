@@ -1,6 +1,5 @@
 package com.renewr.offer.controller;
 
-import com.renewr.collect.entity.Collect;
 import com.renewr.global.common.BaseResponse;
 import com.renewr.global.exception.GlobalErrorCode;
 import com.renewr.offer.dto.OfferDto;

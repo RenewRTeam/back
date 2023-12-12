@@ -1,12 +1,10 @@
 package com.renewr.collect.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.renewr.collect.entity.Collect;
 import com.renewr.global.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;

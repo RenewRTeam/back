@@ -1,10 +1,9 @@
 package com.renewr.offer.service;
 
-import com.renewr.Collection.Entity.DataCollection;
-import com.renewr.Collection.repository.DataCollectionRepository;
+import com.renewr.collection.Entity.DataCollection;
+import com.renewr.collection.repository.DataCollectionRepository;
 import com.renewr.S3.S3Service;
 import com.renewr.collect.entity.Collect;
-import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collect.service.CollectService;
 import com.renewr.file.entity.File;
 import com.renewr.file.service.FileService;
@@ -12,9 +11,7 @@ import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
 import com.renewr.offer.entity.Offer;
 import com.renewr.offer.repository.OfferRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

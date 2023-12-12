@@ -1,8 +1,7 @@
-package com.renewr.Collection.repository;
+package com.renewr.collection.repository;
 
 
-import com.renewr.Collection.Entity.DataCollection;
-import com.renewr.offer.entity.Offer;
+import com.renewr.collection.Entity.DataCollection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
