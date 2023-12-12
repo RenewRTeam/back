@@ -13,6 +13,7 @@ public enum GlobalErrorCode implements ErrorCode {
     CREATED(HttpStatus.CREATED, "CREATED", "요청에 성공했으며 리소스가 정상적으로 생성되었습니다."),
     ACCEPTED(HttpStatus.ACCEPTED, "ACCEPTED", "요청에 성공했으나 처리가 완료되지 않았습니다."),
     /**
+
      * 400 : 클라이언트 요청 오류
      */
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "클라이언트의 요청이 잘못되었습니다."),
