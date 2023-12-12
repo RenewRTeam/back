@@ -1,11 +1,14 @@
 package com.renewr.member.domain;
 
 import com.renewr.global.common.BaseTimeEntity;
+import com.renewr.reward.domain.RewardHistory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,11 +29,17 @@ public class Member extends BaseTimeEntity {
 
     private String name;
 
-    private int point;
+    private int reward;
 
     private String walletAddress;
 
     private Authority authority;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RewardHistory> senders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RewardHistory> receivers = new ArrayList<>();
 
     public Member(String email, Password password, String name, String walletAddress) {
         this.email = email;
