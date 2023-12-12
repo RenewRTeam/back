@@ -1,6 +1,10 @@
 package com.renewr.jwt.provider;
 
-import com.renewr.jwt.dto.Token;
+import com.renewr.jwt.dto.MemberDetails;
+import com.renewr.jwt.entity.Token;
+import com.renewr.jwt.dto.UserDetailDto;
+import com.renewr.member.domain.Member;
+import com.renewr.member.repository.MemberRepository;
 import com.renewr.member.service.MemberTokenService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -46,6 +50,8 @@ public class TokenProvider implements InitializingBean {
 
     private final MemberTokenService memberTokenService;
 
+    private final MemberRepository memberRepository;
+
     private Key key;
 
     @Override
@@ -77,10 +83,7 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(refreshValidity)
                 .compact();
 
-        return Token.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        return new Token(accessToken, refreshToken);
     }
 
     public Authentication getAuthentication(String token) {
@@ -97,8 +100,10 @@ public class TokenProvider implements InitializingBean {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
+        Member member = memberRepository.findByEmail(principal.getUsername()).orElseThrow();
+        MemberDetails memberDetails = new MemberDetails(new UserDetailDto(member));
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(memberDetails, token, authorities);
     }
 
     public boolean validateToken(String token) {

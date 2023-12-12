@@ -1,5 +1,6 @@
 package com.renewr.global.config;
 
+import com.renewr.jwt.filter.JwtFilter;
 import com.renewr.jwt.handler.JwtAccessDeniedHandler;
 import com.renewr.jwt.handler.JwtAuthenticationEntryPoint;
 import com.renewr.jwt.provider.TokenProvider;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -32,6 +34,8 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    private final JwtFilter jwtFilter;
 
     private static final String[] PERMIT_URL = {
             "/member/sign-in",
@@ -58,10 +62,10 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler);
 
         http.authorizeRequests()
-//                .antMatchers(PERMIT_URL).permitAll()
-                .anyRequest().permitAll();
+                .antMatchers(PERMIT_URL).permitAll()
+                .anyRequest().authenticated();
 
-        http.apply(new JwtSecurityConfig(tokenProvider));
+        http.apply(new JwtSecurityConfig(jwtFilter));
 
         return http.build();
     }
