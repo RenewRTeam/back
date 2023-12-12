@@ -1,9 +1,10 @@
 package com.renewr.member.service;
 
 import com.renewr.global.exception.BaseException;
-import com.renewr.jwt.dto.Token;
+import com.renewr.jwt.entity.Token;
 import com.renewr.jwt.filter.JwtFilter;
 import com.renewr.jwt.provider.TokenProvider;
+import com.renewr.jwt.repository.TokenRepository;
 import com.renewr.member.domain.Authority;
 import com.renewr.member.domain.Member;
 import com.renewr.member.domain.Password;
@@ -31,6 +32,8 @@ public class MemberService {
 
     private final TokenProvider tokenProvider;
 
+    private final TokenRepository tokenRepository;
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public Long signUp(SignUpRequest request) {
@@ -47,21 +50,34 @@ public class MemberService {
                 .orElseThrow(() -> BaseException.type(MemberErrorCode.NOT_FOUND_MEMBER));
 
         comparePassword(request.password(), member.getPassword());
-        return generateToken(member.getEmail(), request.password());
+        return generateToken(member.getId(), member.getEmail(), request.password());
     }
 
-    private Token generateToken(String email, String password) {
+    public Long signOut(Long id) {
+        tokenRepository.deleteById(id);
+        return id;
+    }
+
+    public Long withdrawal(Long id) {
+        memberRepository.deleteById(id);
+        tokenRepository.deleteById(id);
+        return id;
+    }
+
+    private Token generateToken(Long id, String email, String password) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password);
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         Token token = tokenProvider.createToken(authentication);
+        token.setMemId(id);
+
+        tokenRepository.save(token);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
-
-        System.out.println("refreshToken : " + token.getRefreshToken());
 
         return token;
     }
