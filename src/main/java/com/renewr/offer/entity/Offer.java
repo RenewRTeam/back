@@ -6,6 +6,7 @@ import com.renewr.collection.Entity.DataCollection;
 import com.renewr.collect.entity.Collect;
 import com.renewr.file.entity.File;
 import com.renewr.global.common.BaseTimeEntity;
+import com.renewr.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -62,6 +63,11 @@ public class Offer extends BaseTimeEntity {
     @JoinColumn(name = "FILE_ID")
     private File file;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+
     public void setCollect(Collect collect){
         this.collect = collect;
     }
@@ -79,10 +85,11 @@ public class Offer extends BaseTimeEntity {
     }
 
     @Builder
-    public Offer(String content, String imageUrl, String location){
+    public Offer(String content, String imageUrl, String location,Member member){
         this.content = content;
         this.imageUrl = imageUrl;
         this.location = location;
+        this.member = member;
     }
 
 

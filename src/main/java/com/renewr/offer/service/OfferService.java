@@ -9,7 +9,9 @@ import com.renewr.file.entity.File;
 import com.renewr.file.service.FileService;
 import com.renewr.global.common.BaseException;
 import com.renewr.global.exception.GlobalErrorCode;
+import com.renewr.member.service.MemberFindService;
 import com.renewr.offer.entity.Offer;
+import com.renewr.offer.exception.OfferErrorCode;
 import com.renewr.offer.repository.OfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,17 +31,19 @@ public class OfferService {
     private final DataCollectionRepository dataCollectionRepository;
     private final FileService fileService;
     private final S3Service s3Service;
+    private final MemberFindService memberFindService;
 
-    public Offer saveOffer(Offer offer,Long collectId,MultipartFile image) throws IOException {
+    public Offer saveOffer(Offer offer,Long collectId,MultipartFile image,Long id) throws IOException {
         Collect collect = collectService.findVerifiedCollect(collectId);
         if(collect.getStatus() == Collect.CollectStatus.CLOSED){
-            throw new RuntimeException();
+            throw new BaseException(OfferErrorCode.COLLECT_CLOSED);
         }
 
         Offer newOffer = Offer.builder()
                 .content(offer.getContent())
                 .imageUrl(offer.getImageUrl())
                 .location(offer.getLocation())
+                .member(memberFindService.findByMemberId(id))
                 .build();
 
         collect.addOffers(newOffer);
@@ -53,12 +58,13 @@ public class OfferService {
     }
 
     public void deleteOffer(Long offerId){
+//        isYourOffer(id,offerId);
         offerRepository.deleteById(offerId);
     }
 
-//    public List<Offer> findMyOffer(Long memberId){
-//        return offerRepository.findByMemberId(memberId);
-//    }
+    public List<Offer> findMyOffer(Long memberId){
+        return offerRepository.findByMemberId(memberId);
+    }
 
     public Offer findOffer(Long offerId){
         return findVerifiedOffer(offerId);
@@ -70,7 +76,7 @@ public class OfferService {
     @Transactional(readOnly = true)
     public Offer findVerifiedOffer(long offerId) {
         return offerRepository.findById(offerId)
-                .orElseThrow(() -> new BaseException(GlobalErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BaseException(OfferErrorCode.OFFER_NOT_FOUND));
     }
 
     public void saveOfferFile(MultipartFile image, Offer offer) throws IOException {
@@ -81,4 +87,10 @@ public class OfferService {
         offer.setFile(file);
     }
 
+//    public void isYourOffer(Long id , Long offerId){
+//        Offer offer = findVerifiedOffer(offerId);
+//        if(!Objects.equals(id, offer.getId())){
+//            throw new BaseException(OfferErrorCode.OFFER_OWNERSHIP);
+//        }
+//    }
 }

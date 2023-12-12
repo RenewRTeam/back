@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.renewr.collection.Entity.DataCollection;
 import com.renewr.file.entity.File;
 import com.renewr.global.common.BaseTimeEntity;
+import com.renewr.member.domain.Member;
 import com.renewr.offer.entity.Offer;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name="collect")
 @Getter
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -75,18 +77,23 @@ public class Collect extends BaseTimeEntity {
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "FILE_ID")
     private File file;
 
     @Builder
-    public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements){
+    public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements,Member member){
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
         this.point = point;
         this.capacity = capacity;
         this.requirements = requirements;
+        this.member = member;
     }
 
 
@@ -122,6 +129,10 @@ public class Collect extends BaseTimeEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setMember(Member member){
+        this.member = member;
     }
 
 }
