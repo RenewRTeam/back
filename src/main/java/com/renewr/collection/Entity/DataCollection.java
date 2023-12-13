@@ -26,21 +26,21 @@ public class DataCollection {
     @JsonBackReference
     private Offer offer;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private DataCollection.collectionStates status = collectionStates.ATTEND;
-
-    @Getter
-    public enum collectionStates {
-        ATTEND ("대기중"),
-        APPROVED("승인");
-
-        private final String value;
-
-        collectionStates(String value) {
-            this.value = value;
-        }
-    }
+//    @Enumerated(EnumType.STRING)
+//    @Column
+//    private DataCollection.collectionStates status = collectionStates.ATTEND;
+//
+//    @Getter
+//    public enum collectionStates {
+//        ATTEND ("대기중"),
+//        APPROVED("승인");
+//
+//        private final String value;
+//
+//        collectionStates(String value) {
+//            this.value = value;
+//        }
+//    }
 
     public void setCollect(Collect collect){
         this.collect = collect;

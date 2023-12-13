@@ -6,6 +6,7 @@ import com.renewr.collect.entity.Collect;
 import com.renewr.collect.entity.Requirement;
 import com.renewr.collect.exception.CollectErrorCode;
 import com.renewr.collect.repository.CollectRepository;
+import com.renewr.collection.repository.DataCollectionRepository;
 import com.renewr.file.entity.File;
 import com.renewr.file.service.FileService;
 import com.renewr.global.annotation.CurrentUser;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,6 +38,7 @@ public class CollectService {
     private final FileService fileService;
     private final S3Service s3Service;
     private final MemberFindService memberFindService;
+    private final DataCollectionRepository dataCollectionRepository;
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
 
         Collect newCollect = Collect.builder()
@@ -84,7 +87,8 @@ public class CollectService {
     }
 
     public void deleteCollect(Long id, Long collectId){
-        isYourContent(id,collectId);
+        Collect findCollect = findVerifiedCollect(collectId);
+        isYourContent(id,findCollect);
         collectRepository.deleteById(collectId);
     }
 
@@ -112,6 +116,7 @@ public class CollectService {
     public void rejectReward(Long offerId){
         Optional<Offer> findOffer = offerRepository.findById(offerId);
         findOffer.get().setOfferStatus(Offer.OfferStatus.REJECTED);
+        dataCollectionRepository.deleteByOfferId(findOffer.get().getId());
         offerRepository.save(findOffer.get());
     }
 
@@ -147,11 +152,9 @@ public class CollectService {
         collect.setFile(file);
     }
 
-    // TODO : ERROR CODE 추가 필요
     //본인의 글이 맞는지 확인하고 아니면 에러 메세지 송출
-    public void isYourContent(Long id , Long collectId){
-        Collect collect = findVerifiedCollect(collectId);
-        if(id != collect.getId()){
+    public void isYourContent(Long id , Collect collect){
+        if(!Objects.equals(id, collect.getMember().getId())){
             throw new BaseException(CollectErrorCode.COLLECT_OWNERSHIP);
         }
     }

@@ -54,5 +54,6 @@ public class OfferDto {
 
         private String imageUrl;
 
+        private Offer.OfferStatus status;
     }
 }
