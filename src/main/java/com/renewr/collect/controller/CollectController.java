@@ -75,8 +75,8 @@ public class CollectController {
 
     //데이터 리워드 결정 (0)
     @PostMapping("/allow/{offer-id}")
-    public String allowOffer(@PathVariable("offer-id")Long offerId){
-        collectService.allowReward(offerId);
+    public String allowOffer(@CurrentUser Long collectorId, @PathVariable("offer-id")Long offerId){
+        collectService.allowReward(collectorId, offerId);
         return "OK";
     }
     @PostMapping("/reject/{offer-id}")
