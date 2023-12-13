@@ -31,7 +31,7 @@ public class CollectController {
 
     //(0)
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<CollectDto.Response> postCollect(@Valid CollectDto.Post post,
+    public ResponseEntity<CollectDto.Response> postCollect(@RequestPart CollectDto.Post post,
                                                            @RequestPart (value = "image") MultipartFile image,
                                                            @CurrentUser Long id)
     throws IOException {
