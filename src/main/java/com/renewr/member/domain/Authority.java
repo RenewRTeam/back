@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Authority {
 
-    USER("USER", "사용자"),
+    OFFER("OFFER", "데이터 제공자"),
+    COLLECTOR("COLLECTOR", "데이터 수집자"),
     ADMIN("ADMIN", "관리자")
     ;
 

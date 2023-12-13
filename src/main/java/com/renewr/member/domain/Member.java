@@ -1,9 +1,13 @@
 package com.renewr.member.domain;
 
 import com.renewr.collect.entity.Collect;
+import com.renewr.global.common.BaseException;
 import com.renewr.global.common.BaseTimeEntity;
 // import com.renewr.reward.domain.RewardHistory;
+import com.renewr.member.exception.MemberErrorCode;
 import com.renewr.offer.entity.Offer;
+import com.renewr.reward.domain.RewardHistory;
+import com.renewr.reward.dto.RewardOperation;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,20 +41,17 @@ public class Member extends BaseTimeEntity {
 
     private Authority authority;
 
-//    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<RewardHistory> senders = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<RewardHistory> receivers = new ArrayList<>();
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RewardHistory> senders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RewardHistory> receivers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collect> collects = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Offer> offers = new ArrayList<>();
-
-
-
 
     public Member(String email, Password password, String name, String walletAddress) {
         this.email = email;
@@ -61,6 +62,15 @@ public class Member extends BaseTimeEntity {
 
     public void setAuthorities(Authority authority) {
         this.authority = authority;
+    }
+
+    public void updateReward(int amount, RewardOperation operation) {
+
+        if (operation == RewardOperation.ADD) {
+            this.reward += amount;
+        } else if (operation == RewardOperation.SUBTRACT) {
+            this.reward -= amount;
+        }
     }
 
 }

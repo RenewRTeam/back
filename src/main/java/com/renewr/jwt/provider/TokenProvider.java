@@ -1,8 +1,10 @@
 package com.renewr.jwt.provider;
 
+import com.renewr.global.exception.BaseException;
 import com.renewr.jwt.dto.MemberDetails;
 import com.renewr.jwt.entity.Token;
 import com.renewr.jwt.dto.UserDetailDto;
+import com.renewr.jwt.exception.JwtErrorCode;
 import com.renewr.member.domain.Member;
 import com.renewr.member.repository.MemberRepository;
 import com.renewr.member.service.MemberTokenService;
@@ -42,10 +44,10 @@ public class TokenProvider implements InitializingBean {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("86400")
+    @Value("3600000")
     private long tokenValidityInMilliseconds;
 
-    @Value("86400")
+    @Value("3600000")
     private long refreshTokenValidityInMilliseconds;
 
     private final MemberTokenService memberTokenService;
@@ -111,15 +113,14 @@ public class TokenProvider implements InitializingBean {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            logger.info("잘못된 JWT 서명입니다.");
+            throw BaseException.type(JwtErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
-            logger.info("만료된 JWT 토큰입니다.");
+            throw BaseException.type(JwtErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
-            logger.info("지원되지 않는 JWT 토큰입니다.");
+            throw BaseException.type(JwtErrorCode.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            logger.info("JWT 토큰이 잘못되었습니다.");
+            throw BaseException.type(JwtErrorCode.ILLEGAL_ARGUMENT);
         }
-        return false;
     }
 
     @Bean

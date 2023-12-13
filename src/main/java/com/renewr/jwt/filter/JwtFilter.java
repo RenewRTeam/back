@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
         String requestURI = (request).getRequestURI();
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+        if (StringUtils.hasText(jwt)) {
             Token token = tokenRepository.findByAccessToken(jwt).orElseThrow(() -> new RuntimeException("토큰이 존재하지 않습니다."));
             Member member = memberRepository.findById(token.getMemId()).orElseThrow(() -> new RuntimeException("멤버가 존재하지 않습니다."));
             if (member != null) {

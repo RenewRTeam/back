@@ -16,6 +16,7 @@ import com.renewr.member.repository.MemberRepository;
 import com.renewr.member.service.MemberFindService;
 import com.renewr.offer.entity.Offer;
 import com.renewr.offer.repository.OfferRepository;
+import com.renewr.reward.service.RewardService;
 import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class CollectService {
     private final FileService fileService;
     private final S3Service s3Service;
     private final MemberFindService memberFindService;
+    private final RewardService rewardService;
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
 
         Collect newCollect = Collect.builder()
@@ -99,14 +101,17 @@ public class CollectService {
     }
 
     //수집 데이터 리워드 결정
-    public void allowReward(Long offerId){
+    public void allowReward(Long collectorId, Long offerId){
         Optional<Offer> findOffer = offerRepository.findById(offerId);
         Collect findCollect = findOffer.get().getCollect();
         findOffer.get().setOfferStatus(Offer.OfferStatus.APPROVED);
         findCollect.setHeadCount(findCollect.getHeadCount()+1);
         collectRepository.save(findCollect);
         offerRepository.save(findOffer.get());
-        // TODO: 리워드 제공 함수 필요
+
+        // 리워드 지급
+        rewardService.transfer(collectorId, offerId, findCollect.getPoint());
+
         isMaxCapacity(findCollect.getId());
     }
     public void rejectReward(Long offerId){

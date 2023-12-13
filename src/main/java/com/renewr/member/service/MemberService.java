@@ -40,7 +40,13 @@ public class MemberService {
         Member member = request.toMember();
         validateDuplicateMember(member.getEmail());
 
-        member.setAuthorities(Authority.USER);
+        int mode = request.mode();
+        if (mode == 0) {
+            member.setAuthorities(Authority.OFFER);
+        } else {
+            member.setAuthorities(Authority.COLLECTOR);
+        }
+
         Member entity = memberRepository.save(member);
         return entity.getId();
     }

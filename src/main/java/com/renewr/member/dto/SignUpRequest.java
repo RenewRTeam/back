@@ -22,6 +22,8 @@ public record SignUpRequest (
         @NotBlank(message = "이름은 필수입니다.")
         String name,
 
+        int mode,
+
         @NotBlank(message = "지갑 주소는 필수입니다.")
         String walletAddress
 
