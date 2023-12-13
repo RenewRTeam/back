@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   build:
-    name: gaseng CI & CD
+    name: databank CI & CD
     runs-on: ubuntu-latest
 
     steps:
