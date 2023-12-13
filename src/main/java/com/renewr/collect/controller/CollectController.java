@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class CollectController {
 
     //(0)
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<CollectDto.Response> postCollect(@RequestPart CollectDto.Post post,
+    public ResponseEntity<CollectDto.Response> postCollect(@Valid CollectDto.Post post,
                                                            @RequestPart (value = "image") MultipartFile image,
                                                            @CurrentUser Long id)
     throws IOException {
