@@ -24,8 +24,10 @@ jobs:
       - name: Set .yml for main
         run: |
           cd ./src/main/resources
-          touch ./application.yaml
+          touch ./application.yml
           echo "${{ secrets.MAIN_YML }}" >> ./application.yml
+          touch ./sceret.yml
+          echo "${{ secrets.SECRET_YML }}" >> ./secret.yml
         shell: bash
 
       - name: Build with Gradle
