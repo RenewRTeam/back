@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DataCollectionRepository extends JpaRepository<DataCollection,Long> {
     List<DataCollection> findByCollectId(Long collectId);
+    void deleteByOfferId(Long offerId);
 }
