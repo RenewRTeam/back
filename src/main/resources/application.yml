@@ -7,18 +7,11 @@ spring:
 
 ---
 spring:
+
   config:
     activate:
-      on-profile: dev
+      on-profile: [ dev, prod ]
 
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-
----
-spring:
   h2:
     console:
       enabled: true
@@ -29,10 +22,9 @@ spring:
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
 
-#create-drop을 활용하여 프로그램 종료 시 테이블 삭제
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
