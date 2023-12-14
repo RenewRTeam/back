@@ -42,6 +42,7 @@ public class CollectService {
     private final RewardService rewardService;
     private final DataCollectionRepository dataCollectionRepository;
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
+        Member member = memberFindService.findByMemberId(id);
 
         Collect newCollect = Collect.builder()
                 .title(collect.getTitle())
@@ -49,8 +50,10 @@ public class CollectService {
                 .imageUrl(collect.getImageUrl())
                 .point(collect.getPoint())
                 .capacity(collect.getCapacity())
-                .member(memberFindService.findByMemberId(id))
+                .member(member)
                 .build();
+
+        newCollect.setUserName(member.getName());
 
         //requirement 추가 하는 로직
         List<Requirement> requirements = new ArrayList<>();

@@ -51,7 +51,6 @@ public class Collect extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private CollectStatus status = CollectStatus.IN_PROGRESS;
-
     @Getter
     public enum CollectStatus {
         IN_PROGRESS("진행중"),
@@ -77,16 +76,18 @@ public class Collect extends BaseTimeEntity {
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
+    @Getter
     private Member member;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "FILE_ID")
     private File file;
 
+    private String userName;
     @Builder
-    public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements,Member member){
+    public Collect(String title, String content, String imageUrl , int point, int capacity,List<Requirement> requirements,Member member,String name){
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
@@ -135,4 +136,7 @@ public class Collect extends BaseTimeEntity {
         this.member = member;
     }
 
+    public void setUserName(String name) {
+        this.userName = name;
+    }
 }
