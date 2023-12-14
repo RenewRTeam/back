@@ -12,6 +12,8 @@ public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Long memId;
 
     private String accessToken;
@@ -23,8 +25,8 @@ public class Token {
         this.refreshToken = refreshToken;
     }
     
-    public void setMemId(Long id) {
-        this.memId = id;
+    public void setMemId(Long memId) {
+        this.memId = memId;
     }
 
 }
