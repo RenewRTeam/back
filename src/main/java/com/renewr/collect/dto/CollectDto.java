@@ -63,6 +63,8 @@ public class CollectDto {
 
         private int capacity;
 
+        private String userName;
+
         private Collect.CollectStatus status;
 
         private List<RequirementDto.Response> requirements;
