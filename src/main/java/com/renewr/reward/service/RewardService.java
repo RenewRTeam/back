@@ -8,6 +8,7 @@ import com.renewr.member.service.MemberFindService;
 import com.renewr.reward.domain.RewardHistory;
 import com.renewr.reward.dto.RewardHistoryResponse;
 import com.renewr.reward.dto.RewardOperation;
+import com.renewr.reward.dto.RewardResponse;
 import com.renewr.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class RewardService {
 
     private final MemberFindService memberFindService;
 
-    public List<RewardHistoryResponse> getHistory(Long memId) {
+    public RewardResponse getHistory(Long memId) {
         Member member = memberFindService.findByMemberId(memId);
         List<RewardHistoryResponse> responses = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public class RewardService {
                 .forEach(responses::add);
 
         responses.sort(Comparator.comparing(RewardHistoryResponse::createdAt).reversed());
-        return responses;
+        return new RewardResponse(member.getReward(), responses);
     }
 
     public Long deposit(Long memId, int amount) {

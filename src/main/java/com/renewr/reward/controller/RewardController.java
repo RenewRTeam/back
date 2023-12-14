@@ -5,6 +5,7 @@ import com.renewr.global.common.BaseResponse;
 import com.renewr.member.dto.Admin;
 import com.renewr.member.service.MemberFindService;
 import com.renewr.reward.dto.RewardHistoryResponse;
+import com.renewr.reward.dto.RewardResponse;
 import com.renewr.reward.service.RewardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class RewardController {
     private final RewardService rewardService;
 
     @GetMapping("/history")
-    public BaseResponse<List<RewardHistoryResponse>> getHistory(@CurrentUser Long memId) {
+    public BaseResponse<RewardResponse> getHistory(@CurrentUser Long memId) {
         return new BaseResponse<>(rewardService.getHistory(memId));
     }
 
