@@ -13,6 +13,6 @@ public class DataCollectionDto {
     @AllArgsConstructor
     public static class listResponse{
         private long id;
-        private OfferDto.OfferImageResponse offer;
+        private OfferDto.CollectionResponse offer;
     }
 }

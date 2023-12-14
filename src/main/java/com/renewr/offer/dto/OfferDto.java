@@ -56,4 +56,18 @@ public class OfferDto {
 
         private Offer.OfferStatus status;
     }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CollectionResponse{
+
+        private Long id;
+
+        private String content;
+
+        private String imageUrl;
+
+        private Offer.OfferStatus offerStatus;
+    }
 }
