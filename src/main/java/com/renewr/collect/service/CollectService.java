@@ -41,6 +41,7 @@ public class CollectService {
     private final MemberFindService memberFindService;
     private final RewardService rewardService;
     private final DataCollectionRepository dataCollectionRepository;
+    private final MemberRepository memberRepository;
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
         Member member = memberFindService.findByMemberId(id);
 
@@ -91,7 +92,7 @@ public class CollectService {
         return findVerifiedCollect(collectId);
     }
 
-    public void deleteCollect(Long id, Long collectId){
+    public void deleteCollect(Long collectId ,Long id){
         Collect findCollect = findVerifiedCollect(collectId);
         isYourContent(id,findCollect);
         collectRepository.deleteById(collectId);
@@ -161,8 +162,8 @@ public class CollectService {
     }
 
     //본인의 글이 맞는지 확인하고 아니면 에러 메세지 송출
-    public void isYourContent(Long id , Collect collect){
-        if(!Objects.equals(id, collect.getMember().getId())){
+    public void isYourContent(Long id,Collect collect){
+        if(id != collect.getMember().getId()){
             throw new BaseException(CollectErrorCode.COLLECT_OWNERSHIP);
         }
     }

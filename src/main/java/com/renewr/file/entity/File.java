@@ -1,5 +1,7 @@
 package com.renewr.file.entity;
 
+import com.renewr.collect.entity.Collect;
+import com.renewr.offer.entity.Offer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +22,16 @@ public class File {
 
     @Column
     private String title;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "collect_id")
+    private Collect collect;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "offer_id")
+    private Offer offer;
+
+
 
     public File(String title, String s3Url) {
         this.title = title;

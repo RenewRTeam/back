@@ -81,7 +81,7 @@ public class Collect extends BaseTimeEntity {
     @Getter
     private Member member;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne()
     @JoinColumn(name = "FILE_ID")
     private File file;
 
