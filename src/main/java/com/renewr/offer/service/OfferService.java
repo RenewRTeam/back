@@ -57,8 +57,8 @@ public class OfferService {
         return offerRepository.save(newOffer);
     }
 
-    public void deleteOffer(Long offerId){
-//        isYourOffer(id,offerId);
+    public void deleteOffer(Long offerId,Long id){
+        isYourOffer(id,offerId);
         offerRepository.deleteById(offerId);
     }
 
@@ -87,10 +87,10 @@ public class OfferService {
         offer.setFile(file);
     }
 
-//    public void isYourOffer(Long id , Long offerId){
-//        Offer offer = findVerifiedOffer(offerId);
-//        if(!Objects.equals(id, offer.getId())){
-//            throw new BaseException(OfferErrorCode.OFFER_OWNERSHIP);
-//        }
-//    }
+    public void isYourOffer(Long id , Long offerId){
+        Offer offer = findVerifiedOffer(offerId);
+        if(!Objects.equals(id, offer.getMember().getId())){
+            throw new BaseException(OfferErrorCode.OFFER_OWNERSHIP);
+        }
+    }
 }
