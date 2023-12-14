@@ -42,7 +42,7 @@ public class OfferDto {
     @AllArgsConstructor
     public static class ListResponse{
         private CollectDto.listResponse listCollect;
-        private Offer.OfferStatus status;
+        private Offer.OfferStatus offerStatus;
     }
 
     @Getter @Setter
@@ -54,6 +54,20 @@ public class OfferDto {
 
         private String imageUrl;
 
-        private Offer.OfferStatus status;
+        private Offer.OfferStatus offerStatus;
+    }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CollectionResponse{
+
+        private Long id;
+
+        private String content;
+
+        private String imageUrl;
+
+        private Offer.OfferStatus offerStatus;
     }
 }

@@ -49,8 +49,9 @@ public class OfferController {
 
     //데이터 제공 글 삭제 (o)
     @DeleteMapping("/{offer-id}")
-    public BaseResponse<GlobalErrorCode> deleteOffer(@PathVariable("offer-id")Long offerId){
-        offerService.deleteOffer(offerId);
+    public BaseResponse<GlobalErrorCode> deleteOffer(@PathVariable("offer-id")Long offerId,
+                                                     @CurrentUser Long id){
+        offerService.deleteOffer(offerId, id);
         return new BaseResponse<>(GlobalErrorCode.SUCCESS);
     }
 

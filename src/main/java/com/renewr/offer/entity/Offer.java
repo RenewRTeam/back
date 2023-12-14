@@ -59,7 +59,7 @@ public class Offer extends BaseTimeEntity {
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne()
     @JoinColumn(name = "FILE_ID")
     private File file;
 

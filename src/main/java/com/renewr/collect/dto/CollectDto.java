@@ -1,10 +1,12 @@
 package com.renewr.collect.dto;
 
 import com.renewr.collect.entity.Collect;
+import com.renewr.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mapstruct.Mapping;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -77,6 +79,8 @@ public class CollectDto {
         private int capacity;
 
         private String imageUrl;
+
+        private String userName;
     }
     @Getter @Setter
     @NoArgsConstructor
