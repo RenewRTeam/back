@@ -9,4 +9,5 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 
     Optional<Token> findByAccessToken(String accessToken);
 
+    void deleteByMemId(Long memId);
 }

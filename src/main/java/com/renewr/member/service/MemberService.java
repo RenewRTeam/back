@@ -66,7 +66,7 @@ public class MemberService {
 
     public Long withdrawal(Long id) {
         memberRepository.deleteById(id);
-        tokenRepository.deleteById(id);
+        tokenRepository.deleteByMemId(id);
         return id;
     }
 

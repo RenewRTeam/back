@@ -114,7 +114,7 @@ public class CollectService {
         offerRepository.save(findOffer.get());
 
         // 리워드 지급
-        rewardService.transfer(collectorId, offerId, findCollect.getPoint());
+        rewardService.transfer(collectorId, findOffer.get().getMember().getId(), findCollect.getPoint());
 
         isMaxCapacity(findCollect.getId());
     }
