@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -37,6 +39,7 @@ public class RewardService {
                 .map(RewardHistoryResponse::toResponseByReceiver)
                 .forEach(responses::add);
 
+        responses.sort(Comparator.comparing(RewardHistoryResponse::createdAt).reversed());
         return responses;
     }
 
@@ -46,8 +49,8 @@ public class RewardService {
 
         member.updateReward(amount, RewardOperation.ADD);
         RewardHistory history = RewardHistory.builder()
-                .sender(member)
-                .receiver(admin)
+                .sender(admin)
+                .receiver(member)
                 .amount(amount)
                 .total(member.getReward())
                 .build();
@@ -66,8 +69,8 @@ public class RewardService {
 
         member.updateReward(amount, RewardOperation.SUBTRACT);
         RewardHistory history = RewardHistory.builder()
-                .sender(admin)
-                .receiver(member)
+                .sender(member)
+                .receiver(admin)
                 .amount(amount)
                 .total(member.getReward())
                 .build();
