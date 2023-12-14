@@ -20,6 +20,8 @@ public class Token {
 
     private String refreshToken;
 
+    private int mode;
+
     public Token(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -27,6 +29,10 @@ public class Token {
     
     public void setMemId(Long memId) {
         this.memId = memId;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
 }

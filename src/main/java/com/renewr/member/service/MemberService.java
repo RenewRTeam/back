@@ -56,7 +56,14 @@ public class MemberService {
                 .orElseThrow(() -> BaseException.type(MemberErrorCode.NOT_FOUND_MEMBER));
 
         comparePassword(request.password(), member.getPassword());
-        return generateToken(member.getId(), member.getEmail(), request.password());
+        Token token = generateToken(member.getId(), member.getEmail(), request.password());
+        String role = member.getAuthority().getAuthority();
+        if (role.equals("COLLECTOR")) {
+            token.setMode(1);
+        } else {
+            token.setMode(0);
+        }
+        return token;
     }
 
     public Long signOut(Long id) {
