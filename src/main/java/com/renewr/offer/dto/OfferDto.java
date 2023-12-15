@@ -54,6 +54,10 @@ public class OfferDto {
 
         private String imageUrl;
 
+        private String content;
+
+        private String location;
+
         private Offer.OfferStatus offerStatus;
     }
 

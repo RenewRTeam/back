@@ -12,8 +12,10 @@ import com.renewr.reward.dto.RewardResponse;
 import com.renewr.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +29,8 @@ public class RewardService {
     private final RewardRepository rewardRepository;
 
     private final MemberFindService memberFindService;
+
+    private final ERC20Service erc20Service;
 
     public RewardResponse getHistory(Long memId) {
         Member member = memberFindService.findByMemberId(memId);
@@ -60,13 +64,18 @@ public class RewardService {
         return memId;
     }
 
-    public Long withdraw(Long memId, int amount) {
+    public Long withdraw(Long memId, int amount) throws Exception {
         Member member = memberFindService.findByMemberId(memId);
         Member admin = memberFindService.findAdmin();
 
         if (member.getReward() < amount) {
             throw BaseException.type(MemberErrorCode.INSUFFICIENT_BALANCE);
         }
+
+        TransactionReceipt receipt = erc20Service.transfer(
+                member.getWalletAddress(),
+                BigInteger.valueOf(amount)
+        );
 
         member.updateReward(amount, RewardOperation.SUBTRACT);
         RewardHistory history = RewardHistory.builder()

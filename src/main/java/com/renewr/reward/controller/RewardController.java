@@ -30,7 +30,7 @@ public class RewardController {
     }
 
     @PostMapping("/withdraw")
-    public BaseResponse<Long> withdraw(@CurrentUser Long id, @RequestParam int amount) {
+    public BaseResponse<Long> withdraw(@CurrentUser Long id, @RequestParam int amount) throws Exception {
         return new BaseResponse<>(rewardService.withdraw(id, amount));
     }
 
