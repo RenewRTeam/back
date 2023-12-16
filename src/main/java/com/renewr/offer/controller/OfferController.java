@@ -42,9 +42,9 @@ public class OfferController {
 
     //자신이 쓴 데이터 제공글 보기 (0)
     @GetMapping("/myOffers")
-    public ResponseEntity<List<OfferDto.OfferImageResponse>> getListOffer(@CurrentUser Long id){
+    public ResponseEntity<List<OfferDto.MyOfferResponse>> getListOffer(@CurrentUser Long id){
         List<Offer> offers =  offerService.findMyOffer(id);
-        return new ResponseEntity<>(mapper.offerToOfferImageResponseDto(offers),HttpStatus.OK);
+        return new ResponseEntity<>(mapper.offerToMyOfferResponseDto(offers),HttpStatus.OK);
     }
 
     //데이터 제공 글 삭제 (o)

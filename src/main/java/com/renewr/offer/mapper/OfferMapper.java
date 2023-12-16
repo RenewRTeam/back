@@ -14,4 +14,6 @@ public interface OfferMapper {
     List<ListResponse> offerToOfferListResponseDto(List<Offer> offer);
 
     List<OfferDto.OfferImageResponse> offerToOfferImageResponseDto(List<Offer> offer);
+
+    List<OfferDto.MyOfferResponse> offerToMyOfferResponseDto(List<Offer> offer);
 }

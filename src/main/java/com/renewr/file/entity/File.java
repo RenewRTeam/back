@@ -23,7 +23,7 @@ public class File {
     @Column
     private String title;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne()
     @JoinColumn(name = "collect_id")
     private Collect collect;
 

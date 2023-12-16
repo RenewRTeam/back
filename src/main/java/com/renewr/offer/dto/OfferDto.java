@@ -74,4 +74,16 @@ public class OfferDto {
 
         private Offer.OfferStatus offerStatus;
     }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyOfferResponse{
+
+            private Long id;
+
+            private Offer.OfferStatus offerStatus;
+
+            private CollectDto.listResponse collect;
+    }
 }

@@ -8,6 +8,7 @@ import com.renewr.collect.exception.CollectErrorCode;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collection.repository.DataCollectionRepository;
 import com.renewr.file.entity.File;
+import com.renewr.file.repository.FileRepository;
 import com.renewr.file.service.FileService;
 import com.renewr.global.annotation.CurrentUser;
 import com.renewr.global.common.BaseException;
@@ -41,7 +42,7 @@ public class CollectService {
     private final MemberFindService memberFindService;
     private final RewardService rewardService;
     private final DataCollectionRepository dataCollectionRepository;
-    private final MemberRepository memberRepository;
+
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
         Member member = memberFindService.findByMemberId(id);
 
@@ -94,7 +95,7 @@ public class CollectService {
 
     public void deleteCollect(Long collectId ,Long id){
         Collect findCollect = findVerifiedCollect(collectId);
-        isYourContent(id,findCollect);
+//        isYourContent(id,findCollect);
         collectRepository.deleteById(collectId);
     }
 
@@ -165,6 +166,9 @@ public class CollectService {
     public void isYourContent(Long id,Collect collect){
         if(id != collect.getMember().getId()){
             throw new BaseException(CollectErrorCode.COLLECT_OWNERSHIP);
+        }
+        else{
+            collectRepository.deleteById(collect.getId());
         }
     }
 }
