@@ -4,6 +4,7 @@ import com.renewr.collection.Entity.DataCollection;
 import com.renewr.collection.dto.DataCollectionDto;
 import com.renewr.collection.mapper.DataCollectionMapper;
 import com.renewr.collection.repository.DataCollectionRepository;
+import com.renewr.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class DataCollectionController {
     private final DataCollectionRepository repository;
     private final DataCollectionMapper mapper;
     @GetMapping("/{collect-id}")
-    public ResponseEntity<List<DataCollectionDto.listResponse>> getOffersByCollectId(@PathVariable("collect-id")Long collectId){
+    public BaseResponse<List<DataCollectionDto.listResponse>> getOffersByCollectId(@PathVariable("collect-id")Long collectId){
         List<DataCollection> dataCollection = repository.findByCollectId(collectId);
-        return new ResponseEntity<>(mapper.dataCollectionToDataCollectionDto(dataCollection), HttpStatus.OK);
+        return new BaseResponse<>(mapper.dataCollectionToDataCollectionDto(dataCollection));
     }
 }

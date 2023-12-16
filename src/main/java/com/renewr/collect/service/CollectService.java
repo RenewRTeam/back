@@ -8,18 +8,14 @@ import com.renewr.collect.exception.CollectErrorCode;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collection.repository.DataCollectionRepository;
 import com.renewr.file.entity.File;
-import com.renewr.file.repository.FileRepository;
 import com.renewr.file.service.FileService;
-import com.renewr.global.annotation.CurrentUser;
-import com.renewr.global.common.BaseException;
-import com.renewr.global.exception.GlobalErrorCode;
+import com.renewr.global.exception.BaseException;
 import com.renewr.member.domain.Member;
-import com.renewr.member.repository.MemberRepository;
+
 import com.renewr.member.service.MemberFindService;
 import com.renewr.offer.entity.Offer;
 import com.renewr.offer.repository.OfferRepository;
 import com.renewr.reward.service.RewardService;
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +86,8 @@ public class CollectService {
     }
 
     public Collect findCollect(Long collectId){
-        return findVerifiedCollect(collectId);
+        return collectRepository.findById(collectId)
+                .orElseThrow(() ->  BaseException.type(CollectErrorCode.COLLECT_NOT_FOUND));
     }
 
     public void deleteCollect(Long collectId ,Long id){
@@ -106,7 +103,7 @@ public class CollectService {
     @Transactional(readOnly = true)
     public Collect findVerifiedCollect(long collectId) {
         return collectRepository.findById(collectId)
-                .orElseThrow(() -> new BaseException(CollectErrorCode.COLLECT_NOT_FOUND));
+                .orElseThrow(() -> BaseException.type(CollectErrorCode.COLLECT_NOT_FOUND));
     }
 
     //수집 데이터 리워드 결정
@@ -165,7 +162,7 @@ public class CollectService {
     //본인의 글이 맞는지 확인하고 아니면 에러 메세지 송출
     public void isYourContent(Long id,Collect collect){
         if(id != collect.getMember().getId()){
-            throw new BaseException(CollectErrorCode.COLLECT_OWNERSHIP);
+            throw  BaseException.type(CollectErrorCode.COLLECT_OWNERSHIP);
         }
         else{
             collectRepository.deleteById(collect.getId());

@@ -25,26 +25,26 @@ public class OfferController {
 
     //데이터 제공 글 작성하기 (0)
     @PostMapping(value = "/{collectId}" ,consumes = {"multipart/form-data"})
-    public ResponseEntity<OfferDto.response> postOffer(@PathVariable @RequestPart("collect-id")Long collectId,
+    public BaseResponse<OfferDto.response> postOffer(@PathVariable @RequestPart("collect-id")Long collectId,
                                                        @CurrentUser Long id,
                                                        @RequestPart OfferDto.post post,
                                                        @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
         Offer offer = offerService.saveOffer(mapper.offerPostDtoToOffer(post),collectId,image,id);
-        return new ResponseEntity<>(mapper.offerToOfferResponseDto(offer), HttpStatus.CREATED);
+        return new BaseResponse<>(mapper.offerToOfferResponseDto(offer));
     }
 
     // 특정 데이터 제공 글 확인하기(0)
     @GetMapping("/{offer-id}")
-    public ResponseEntity<OfferDto.response> getOffer(@PathVariable("offer-id")Long offerId){
+    public BaseResponse<OfferDto.response> getOffer(@PathVariable("offer-id")Long offerId){
         Offer offer = offerService.findOffer(offerId);
-        return new ResponseEntity<>(mapper.offerToOfferResponseDto(offer),HttpStatus.OK);
+        return new BaseResponse<>(mapper.offerToOfferResponseDto(offer));
     }
 
     //자신이 쓴 데이터 제공글 보기 (0)
     @GetMapping("/myOffers")
-    public ResponseEntity<List<OfferDto.MyOfferResponse>> getListOffer(@CurrentUser Long id){
+    public BaseResponse<List<OfferDto.MyOfferResponse>> getListOffer(@CurrentUser Long id){
         List<Offer> offers =  offerService.findMyOffer(id);
-        return new ResponseEntity<>(mapper.offerToMyOfferResponseDto(offers),HttpStatus.OK);
+        return new BaseResponse<>(mapper.offerToMyOfferResponseDto(offers));
     }
 
     //데이터 제공 글 삭제 (o)
@@ -57,8 +57,8 @@ public class OfferController {
 
     //수집 데이터 관리 탭에 들어갈 때  (0)
     @GetMapping("/col/{collect-id}")
-    public ResponseEntity<List<OfferDto.OfferImageResponse>> getOfferByCollectId(@PathVariable("collect-id")Long collectId){
+    public BaseResponse<List<OfferDto.OfferImageResponse>> getOfferByCollectId(@PathVariable("collect-id")Long collectId){
         List<Offer> listOffer = offerService.findOfferByCollectId(collectId);
-        return new ResponseEntity<>(mapper.offerToOfferImageResponseDto(listOffer),HttpStatus.OK);
+        return new BaseResponse<>(mapper.offerToOfferImageResponseDto(listOffer));
     }
 }

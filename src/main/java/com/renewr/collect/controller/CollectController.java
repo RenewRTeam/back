@@ -31,39 +31,39 @@ public class CollectController {
 
     //(0)
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<CollectDto.Response> postCollect(@RequestPart CollectDto.Post post,
+    public BaseResponse<CollectDto.Response> postCollect(@RequestPart CollectDto.Post post,
                                                            @RequestPart (value = "image") MultipartFile image,
                                                            @CurrentUser Long id)
     throws IOException {
         Collect collect = collectService.saveCollect(mapper.collectPostDtoToCollect(post),image,id);
-        return new ResponseEntity<>(mapper.collectToCollectResponseDto(collect), HttpStatus.CREATED);
+        return new BaseResponse<>(mapper.collectToCollectResponseDto(collect));
     }
 
     @PatchMapping("/{collect-id}")
-    public ResponseEntity<CollectDto.Response> patchCollect(@PathVariable("collect-id") Long collectId,
+    public BaseResponse<CollectDto.Response> patchCollect(@PathVariable("collect-id") Long collectId,
                                        @RequestBody CollectDto.Patch patch){
         Collect collect = collectService.patchCollect(collectId,mapper.collectPatchDtoToCollect(patch));
-        return new ResponseEntity<>(mapper.collectToCollectResponseDto(collect),HttpStatus.OK);
+        return new BaseResponse<>(mapper.collectToCollectResponseDto(collect));
     }
 
     //(0)
     @GetMapping()
-    public ResponseEntity<List<CollectDto.listResponse>> getCollects(){
+    public BaseResponse<List<CollectDto.listResponse>> getCollects(){
         List<Collect> listCollects = collectService.findAllCollect();
-        return new ResponseEntity<>(mapper.collectToCollectListResponseDto(listCollects),HttpStatus.OK);
+        return new BaseResponse<>(mapper.collectToCollectListResponseDto(listCollects));
     }
 
     //(0)
     @GetMapping("/{collect-id}")
-    public ResponseEntity<CollectDto.Response> getCollect(@PathVariable("collect-id") Long collectId){
+    public BaseResponse<CollectDto.Response> getCollect(@PathVariable("collect-id") Long collectId){
         Collect collect = collectService.findCollect(collectId);
-        return new ResponseEntity<>(mapper.collectToCollectResponseDto(collect),HttpStatus.OK);
+        return new BaseResponse<>(mapper.collectToCollectResponseDto(collect));
     }
 
     @GetMapping("/myCollect") //(0)
-    public ResponseEntity<List<CollectDto.listResponse>> getMyCollects(@CurrentUser Long id){
+    public BaseResponse<List<CollectDto.listResponse>> getMyCollects(@CurrentUser Long id){
         List<Collect> listMyCollects = collectService.findMyCollects(id);
-        return new ResponseEntity<>(mapper.collectToCollectListResponseDto(listMyCollects),HttpStatus.OK);
+        return new BaseResponse<>(mapper.collectToCollectListResponseDto(listMyCollects));
     }
 
     //(0)
