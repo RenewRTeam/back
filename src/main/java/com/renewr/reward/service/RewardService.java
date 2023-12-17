@@ -72,10 +72,10 @@ public class RewardService {
             throw BaseException.type(MemberErrorCode.INSUFFICIENT_BALANCE);
         }
 
-        TransactionReceipt receipt = erc20Service.transfer(
-                member.getWalletAddress(),
-                BigInteger.valueOf(amount)
-        );
+//        TransactionReceipt receipt = erc20Service.transfer(
+//                member.getWalletAddress(),
+//                BigInteger.valueOf(amount)
+//        );
 
         member.updateReward(amount, RewardOperation.SUBTRACT);
         RewardHistory history = RewardHistory.builder()
