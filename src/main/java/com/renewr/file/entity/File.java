@@ -23,9 +23,9 @@ public class File {
     @Column
     private String title;
 
-    @OneToOne()
-    @JoinColumn(name = "collect_id")
-    private Collect collect;
+//    @OneToOne(cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "collect_id")
+//    private Collect collect;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "offer_id")
@@ -46,4 +46,5 @@ public class File {
                 ", s3Url='" + s3Url + '\'' +
                 '}';
     }
+
 }

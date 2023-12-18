@@ -22,7 +22,7 @@ public class Requirement extends BaseTimeEntity {
     @Column
     private String value;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id")
     @JsonBackReference
     private Collect collect;

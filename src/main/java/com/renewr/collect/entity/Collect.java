@@ -64,15 +64,15 @@ public class Collect extends BaseTimeEntity {
     }
 
     @Getter
-    @OneToMany(mappedBy = "collect",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collect", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Requirement> requirements = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collect",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collect", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Offer> offers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collect",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collect", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<DataCollection> dataCollections = new ArrayList<>();
 
@@ -81,9 +81,9 @@ public class Collect extends BaseTimeEntity {
     @Getter
     private Member member;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "FILE_ID")
-    private File file;
+//    @OneToOne(mappedBy = "collect", cascade = CascadeType.REMOVE)
+//    private File file;
+
 
     private String userName;
     @Builder
@@ -116,8 +116,12 @@ public class Collect extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+//    public void setFile(File file) {
+//        this.file = file;
+//    }
+
+    public void setDataCollections(List<DataCollection> dataCollections) {
+        this.dataCollections = dataCollections;
     }
 
     public void setHeadCount(int headCount) {

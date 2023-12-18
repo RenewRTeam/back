@@ -8,6 +8,7 @@ import com.renewr.collect.exception.CollectErrorCode;
 import com.renewr.collect.repository.CollectRepository;
 import com.renewr.collection.repository.DataCollectionRepository;
 import com.renewr.file.entity.File;
+import com.renewr.file.repository.FileRepository;
 import com.renewr.file.service.FileService;
 import com.renewr.global.exception.BaseException;
 import com.renewr.member.domain.Member;
@@ -38,6 +39,7 @@ public class CollectService {
     private final MemberFindService memberFindService;
     private final RewardService rewardService;
     private final DataCollectionRepository dataCollectionRepository;
+    private final FileRepository fileRepository;
 
     public Collect saveCollect(Collect collect,MultipartFile image,Long id) throws IOException {
         Member member = memberFindService.findByMemberId(id);
@@ -92,15 +94,15 @@ public class CollectService {
 
     public void deleteCollect(Long collectId ,Long id){
         Collect findCollect = findVerifiedCollect(collectId);
-//        isYourContent(id,findCollect);
-        collectRepository.deleteById(collectId);
+        isYourContent(id,findCollect);
+
+        collectRepository.deleteCollectById(collectId);
     }
 
     public List<Collect> findMyCollects(long id){
         return collectRepository.findByMemberId(id);
     }
 
-    @Transactional(readOnly = true)
     public Collect findVerifiedCollect(long collectId) {
         return collectRepository.findById(collectId)
                 .orElseThrow(() -> BaseException.type(CollectErrorCode.COLLECT_NOT_FOUND));
@@ -153,19 +155,13 @@ public class CollectService {
 
     public void saveCollectFile(MultipartFile image, Collect collect) throws IOException {
         String url = s3Service.uploadFile(image); // 이미지 s3에 업로드
-        File file = new File(image.getOriginalFilename(), url);
-        fileService.save(file); // file repository 저장
         collect.setImageUrl(url);
-        collect.setFile(file);
     }
 
     //본인의 글이 맞는지 확인하고 아니면 에러 메세지 송출
     public void isYourContent(Long id,Collect collect){
-        if(id != collect.getMember().getId()){
+        if(!Objects.equals(id, collect.getMember().getId())){
             throw  BaseException.type(CollectErrorCode.COLLECT_OWNERSHIP);
-        }
-        else{
-            collectRepository.deleteById(collect.getId());
         }
     }
 }
