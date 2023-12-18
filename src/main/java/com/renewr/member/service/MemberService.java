@@ -112,4 +112,10 @@ public class MemberService {
                 .orElseThrow(() -> BaseException.type(MemberErrorCode.NOT_FOUND_MEMBER));
         return member.getName();
     }
+
+    public int getReward(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> BaseException.type(MemberErrorCode.NOT_FOUND_MEMBER));
+        return member.getReward();
+    }
 }

@@ -43,4 +43,9 @@ public class MemberApiController {
         return new BaseResponse<>(memberService.getName(id));
     }
 
+    @GetMapping("/reward")
+    public BaseResponse<Integer> getReward(@CurrentUser Long id) {
+        return new BaseResponse<>(memberService.getReward(id));
+    }
+
 }
