@@ -18,7 +18,7 @@ public class ERC20Service {
 
     private final Credentials credentials;
 
-    private final String contractAddress = "0x17D0Ae7cE8993D1085D4656Fb6d5cBa917620226";
+    private final String contractAddress = "0x564a86944638f8598E95b742b967970893475cB0";
 
     private final ERC20 token;
 

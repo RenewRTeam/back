@@ -64,7 +64,7 @@ public class Collect extends BaseTimeEntity {
     }
 
     @Getter
-    @OneToMany(mappedBy = "collect", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collect", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Requirement> requirements = new ArrayList<>();
 

@@ -14,30 +14,23 @@ public record RewardHistoryResponse (
     String createdAt
 ) {
 
-    public static RewardHistoryResponse toResponseBySender(RewardHistory history) {
+    public static RewardHistoryResponse toResponseByBase(RewardHistory history, Member member) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = history.getCreatedDate().format(formatter);
+
+        String operation = "";
+        if (history.getSender().getId().equals(member.getId())) {
+            operation = "-";
+        } else {
+            operation = "+";
+        }
 
         return new RewardHistoryResponse(
                 history.getSender().getName(),
                 history.getReceiver().getName(),
-                "-" + history.getAmount(),
+                operation + history.getAmount(),
                 String.valueOf(history.getTotal()),
                 formattedDate
         );
     }
-
-    public static RewardHistoryResponse toResponseByReceiver(RewardHistory history) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = history.getCreatedDate().format(formatter);
-
-        return new RewardHistoryResponse(
-                history.getSender().getName(),
-                history.getReceiver().getName(),
-                "+" + history.getAmount(),
-                String.valueOf(history.getTotal()),
-                formattedDate
-        );
-    }
-
 }

@@ -34,15 +34,20 @@ public class RewardService {
 
     public RewardResponse getHistory(Long memId) {
         Member member = memberFindService.findByMemberId(memId);
+        List<RewardHistory> histories = rewardRepository.findByBase(member);
         List<RewardHistoryResponse> responses = new ArrayList<>();
 
-        member.getSenders().stream()
-                .map(RewardHistoryResponse::toResponseBySender)
+        histories.stream()
+                .map(base -> RewardHistoryResponse.toResponseByBase(base, member))
                 .forEach(responses::add);
-
-        member.getReceivers().stream()
-                .map(RewardHistoryResponse::toResponseByReceiver)
-                .forEach(responses::add);
+//
+//        member.getSenders().stream()
+//                .map(RewardHistoryResponse::toResponseBySender)
+//                .forEach(responses::add);
+//
+//        member.getReceivers().stream()
+//                .map(RewardHistoryResponse::toResponseByReceiver)
+//                .forEach(responses::add);
 
         responses.sort(Comparator.comparing(RewardHistoryResponse::createdAt).reversed());
         return new RewardResponse(member.getReward(), responses);
@@ -58,6 +63,7 @@ public class RewardService {
                 .receiver(member)
                 .amount(amount)
                 .total(member.getReward())
+                .base(member)
                 .build();
 
         rewardRepository.save(history);
@@ -83,6 +89,7 @@ public class RewardService {
                 .receiver(admin)
                 .amount(amount)
                 .total(member.getReward())
+                .base(member)
                 .build();
 
         rewardRepository.save(history);
@@ -105,13 +112,15 @@ public class RewardService {
                 .receiver(receiver)
                 .amount(amount)
                 .total(sender.getReward())
+                .base(sender)
                 .build();
 
         RewardHistory receiverHistory = RewardHistory.builder()
-                .sender(receiver)
-                .receiver(sender)
+                .sender(sender)
+                .receiver(receiver)
                 .amount(amount)
                 .total(receiver.getReward())
+                .base(receiver)
                 .build();
 
         rewardRepository.save(senderHistory);

@@ -27,16 +27,21 @@ public class RewardHistory extends BaseTimeEntity {
     @JoinColumn(name = "receiver_id", nullable = false)
     private Member receiver;
 
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "base_id", nullable = false)
+    private Member base;
+
     int total;
 
     int amount;
 
     @Builder
-    public RewardHistory(Member sender, Member receiver, int total, int amount) {
+    public RewardHistory(Member sender, Member receiver, int total, int amount, Member base) {
         this.sender = sender;
         this.receiver = receiver;
         this.total = total;
         this.amount = amount;
+        this.base = base;
     }
 
 }

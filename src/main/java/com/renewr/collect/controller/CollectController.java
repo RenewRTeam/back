@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -50,6 +51,7 @@ public class CollectController {
     @GetMapping()
     public BaseResponse<List<CollectDto.listResponse>> getCollects(){
         List<Collect> listCollects = collectService.findAllCollect();
+        Collections.reverse(listCollects);
         return new BaseResponse<>(mapper.collectToCollectListResponseDto(listCollects));
     }
 
