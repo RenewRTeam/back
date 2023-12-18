@@ -107,4 +107,9 @@ public class MemberService {
         }
     }
 
+    public String getName(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> BaseException.type(MemberErrorCode.NOT_FOUND_MEMBER));
+        return member.getName();
+    }
 }

@@ -7,10 +7,7 @@ import com.renewr.member.dto.SignInRequest;
 import com.renewr.member.dto.SignUpRequest;
 import com.renewr.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -39,6 +36,11 @@ public class MemberApiController {
     @PostMapping("/withdrawal")
     public BaseResponse<Long> withdrawal(@CurrentUser Long id) {
         return new BaseResponse<>(memberService.withdrawal(id));
+    }
+
+    @GetMapping("/name")
+    public BaseResponse<String> getName(@CurrentUser Long id) {
+        return new BaseResponse<>(memberService.getName(id));
     }
 
 }
